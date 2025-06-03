@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --dark-blue: #0a192f;
+            --navy-blue: #172a45;
+            --light-blue: #64ffda;
+            --gold-accent: #ffd700;
+            --gold-light: #ffec80;
+            --white: #e6f1ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--navy-blue);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            z-index: 10;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                var(--gold-accent)
+            );
+            transform: rotate(0deg);
+            animation: rotate 8s linear infinite;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background-color: var(--navy-blue);
+            border-radius: 10px;
+            z-index: -1;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--gold-accent);
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 1.8rem;
+            text-shadow: 0 2px 5px rgba(255, 215, 0, 0.3);
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px 12px;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .input-group input:focus {
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .input-group label {
+            position: absolute;
+            top: 14px;
+            left: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: -12px;
+            left: 12px;
+            font-size: 0.8rem;
+            background-color: var(--navy-blue);
+            padding: 0 6px;
+            color: var(--gold-light);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--gold-accent);
+            color: var(--dark-blue);
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        button:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .forgot-link {
+            text-align: right;
+            margin-top: -1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .forgot-link a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .forgot-link a:hover {
+            color: var(--gold-accent);
+            text-decoration: underline;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .register-link a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .register-link a:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+        
+        .golden-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: var(--gold-accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-particle 15s infinite linear;
+            filter: blur(1px);
+        }
+        
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .golden-corner {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--gold-accent), transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .corner-1 {
+            top: -100px;
+            right: -100px;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        .corner-2 {
+            bottom: -100px;
+            left: -100px;
+            animation: pulse 10s ease-in-out infinite 2s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.15;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="golden-corner corner-1"></div>
+    <div class="golden-corner corner-2"></div>
+    
+    <div class="golden-particles" id="particles"></div>
+    
+    <div class="container">
+        <h2>Welcome Back</h2>
+        <form>
+            <div class="input-group">
+                <input type="email" required>
+                <label>Email Address</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required>
+                <label>Password</label>
+            </div>
+            <div class="forgot-link">
+                <a href="#">Forgot Password?</a>
+            </div>
+            <button type="submit">Login</button>
+            <div class="register-link">
+                Don't have an account? <a href="reg.htm">Register</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Create golden particles
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2 and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.bottom = `-10px`;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 15;
+                particle.style.animation = `float-particle ${duration}s ${delay}s infinite linear`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
+

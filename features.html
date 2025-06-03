@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIBA Portal - Explore Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Password Protection Styles */
+        #password-protection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a1a3a 0%, #051025 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        #password-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(204, 163, 84, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        #password-form h2 {
+            color: #cca354;
+            margin-bottom: 1.5rem;
+        }
+        
+        #password-input {
+            width: 75%;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 2px solid rgba(204, 163, 84, 0.5);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        #password-submit {
+            background-color: #cca354;
+            color: #0a1a3a;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        #password-submit:hover {
+            background-color: #e6c87d;
+        }
+        
+        #password-error {
+            color: #ff6b6b;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Color Scheme */
+        :root {
+            --dark-blue: #0a1a3a;
+            --darker-blue: #051025;
+            --navy-blue: #142850;
+            --golden: #cca354;
+            --light-golden: #e6c87d;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333333;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--darker-blue);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* Page Container */
+        #explore-page {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            display: none;
+        }
+
+        /* Hero Section */
+        .explore-hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--darker-blue) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .explore-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(204, 163, 84, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            flex: 1 1 50%;
+            min-width: 200px;
+            padding-right: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--golden);
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            flex: 1 1 40%;
+            min-width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transform: perspective(1000px) rotateY(-10deg);
+            position: relative;
+            z-index: 1;
+            border: 2px solid rgba(204, 163, 84, 0.3);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .golden-btn {
+            background-color: var(--golden);
+            color: var(--dark-blue);
+            border: 2px solid var(--golden);
+        }
+
+        .golden-btn:hover {
+            background-color: var(--light-golden);
+            border-color: var(--light-golden);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(204, 163, 84, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--golden);
+            color: var(--golden);
+            background-color: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(204, 163, 84, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(204, 163, 84, 0.2);
+        }
+
+        /* Section Styles */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 0 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--golden);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--golden);
+            border-radius: 2px;
+        }
+
+        /* Feature Grid */
+        .feature-highlights {
+            padding: 6rem 5%;
+            background-color: var(--dark-blue);
+            position: relative;
+        }
+
+        .feature-highlights::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="%230a1a3a" d="M0,0 L100,0 L100,100 Q50,80 0,100 Z"></path></svg>');
+            background-size: 100% 100px;
+            background-repeat: no-repeat;
+            background-position: top center;
+            pointer-events: none;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border-radius: 12px;
+            padding: 2.5rem;
+            border: 1px solid rgba(204, 163, 84, 0.1);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(204, 163, 84, 0.05) 0%, transparent 100%);
+            z-index: -1;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(204, 163, 84, 0.3);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+            background: linear-gradient(135deg, var(--golden) 0%, var(--light-golden) 100%);
+            box-shadow: 0 5px 15px rgba(204, 163, 84, 0.3);
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--golden);
+            position: relative;
+            display: inline-block;
+        }
+
+        .feature-item h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--golden);
+            border-radius: 2px;
+        }
+
+        .feature-item p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .golden-link {
+            color: var(--golden);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .golden-link:hover {
+            color: var(--light-golden);
+            gap: 0.8rem;
+        }
+
+        .golden-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .golden-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 6rem 5%;
+            background-color: var(--darker-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="%23051025" d="M0,100 L100,100 L100,0 Q50,20 0,0 Z"></path></svg>');
+            background-size: 100% 100px;
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            pointer-events: none;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            flex: 1 1 450px;
+            background: linear-gradient(145deg, rgba(10, 26, 58, 0.8) 0%, rgba(5, 16, 37, 0.9) 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            position: relative;
+            border: 1px solid rgba(204, 163, 84, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23cca354" opacity="0.03" d="M0,0 L50,0 L50,50 L0,50 Z M50,50 L100,50 L100,100 L50,100 Z"></path></svg>');
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .quote-icon {
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+            opacity: 0.1;
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            color: var(--golden);
+            font-family: serif;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .student-info {
+            border-top: 1px solid rgba(204, 163, 84, 0.3);
+            padding-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .student-name {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--golden);
+            font-size: 1.2rem;
+        }
+
+        .student-course {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideLeft {
+            from { 
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from { 
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes cardPop {
+            from { 
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .animate-slide-up {
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        .animate-slide-left {
+            opacity: 0;
+            animation: slideLeft 0.8s ease forwards;
+        }
+
+        .animate-slide-right {
+            opacity: 0;
+            animation: slideRight 0.8s ease forwards;
+        }
+
+        .animate-card {
+            opacity: 0;
+            animation: cardPop 0.8s ease forwards;
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .explore-hero {
+                padding: 4rem 5%;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .explore-hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 3rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                transform: none;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .feature-item {
+                padding: 2rem;
+            }
+            
+            .testimonial-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection -->
+    <div id="password-protection">
+        <div id="password-form">
+            <h2>Enter Password</h2>
+            <p>Please enter the password to access the LIBA Portal</p>
+            <input type="password" id="password-input" placeholder="Enter password">
+            <button id="password-submit">Submit</button>
+            <div id="password-error">Incorrect password. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Explore Page -->
+    <div id="explore-page">
+        <section class="explore-hero">
+            <div class="hero-content">
+                <h1 class="animate-fade-in">Unlock the Power of LIBA's Students Portal</h1>
+                <p class="animate-fade-in delay-1">Discover tools designed to elevate your learning experience.</p>
+                <div class="hero-buttons animate-fade-in delay-2">
+                    
+                    <a href="#features" class="btn btn-outline scroll-link">
+                        <i class="fas fa-binoculars"></i> Explore Features
+                    </a>
+                </div>
+            </div>
+           
+        </section>
+
+        <section id="features" class="feature-highlights">
+            <div class="section-header animate-fade-in">
+                <h2>Features</h2>
+                <p class="animate-fade-in delay-1">Everything you need for academic success in one powerful platform</p>
+            </div>
+            
+            <div class="feature-grid">
+                <!-- Feature 1 -->
+                <div class="feature-item animate-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Digital Library</h3>
+                    <p>Access thousands of e-books, Youtube videos, and course materials curated by our faculty. 
+                        All resources are organized by subject and updated regularly.</p>
+                    <a href="library.html" class="golden-link">
+                        Learn more <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+                
+                
+                
+                <!-- Feature 3 -->
+                <div class="feature-item animate-card delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Collaboration Spaces</h3>
+                    <p>Virtual classrooms, group workspaces, and discussion forums to connect with peers and faculty anytime, anywhere.</p>
+                    <a href="#" class="golden-link">
+                        Learn more <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-item animate-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Yearly Calender</h3>
+                    <p>Integrated calendar with exam schedules, and full calender of the year.</p>
+                    <a href="Calender.htm" class="golden-link">
+                        Learn more <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+                
+               
+                
+                <!-- Feature 6 -->
+                <div class="feature-item animate-card delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Smart Notifications</h3>
+                    <p>Customizable alerts for deadlines, new content, forum activity, and important announcements via multiple channels.</p>
+                    <a href="#" class="golden-link">
+                        Learn more <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Password Protection Script
+        const correctPassword = "123"; // Set your password here
+        const passwordProtection = document.getElementById('password-protection');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmit = document.getElementById('password-submit');
+        const passwordError = document.getElementById('password-error');
+        const explorePage = document.getElementById('explore-page');
+        
+        passwordSubmit.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        function checkPassword() {
+            if (passwordInput.value === correctPassword) {
+                passwordProtection.style.display = 'none';
+                explorePage.style.display = 'block';
+                document.getElementById('explore-page').style.opacity = '1';
+            } else {
+                passwordError.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+        
+        // Simple script to handle page load animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('.scroll-link').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

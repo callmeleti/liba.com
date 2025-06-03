@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Contact Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --dark-space: #0a0e17;
+            --deep-space: #121a2b;
+            --gold-accent: #ffd700;
+            --gold-light: #ffec80;
+            --white: #e6f1ff;
+            --transparent-bg: rgba(23, 42, 69, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-space);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Space background with stars */
+        .space {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* Shooting stars */
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, var(--gold-accent) 100%);
+            border-radius: 50%;
+            animation: shooting var(--speed) linear infinite;
+            opacity: 0;
+            transform: rotate(45deg);
+        }
+        
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255,215,0,0.1) 0%, var(--gold-accent) 100%);
+        }
+        
+        @keyframes shooting {
+            0% {
+                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(1000px) translateY(-1000px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        #contact-form {
+            width: 100%;
+            max-width: 700px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-form {
+            background-color: var(--transparent-bg);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                var(--gold-accent)
+            );
+            transform: rotate(0deg);
+            animation: rotate 15s linear infinite;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gold-light);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--gold-accent);
+            color: var(--dark-space);
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                white
+            );
+            transform: rotate(0deg);
+            animation: rotate 8s linear infinite;
+            opacity: 0.2;
+        }
+        
+        /* Floating label animation */
+        .form-group.focused label {
+            transform: translateY(-25px);
+            font-size: 0.8rem;
+            color: var(--gold-accent);
+        }
+        
+        /* Grid layout for larger screens */
+        @media (min-width: 600px) {
+            .contact-form {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space" id="space"></div>
+    
+    <form id="contact-form">
+        <div class="contact-form">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group full-width">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </div>
+    </form>
+
+    <script>
+        // Create starfield background
+        document.addEventListener('DOMContentLoaded', function() {
+            const space = document.getElementById('space');
+            const starCount = 200;
+            const shootingStarCount = 5;
+            
+            // Create static stars
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1 and 3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation duration
+                const duration = Math.random() * 5 + 3;
+                star.style.setProperty('--duration', `${duration}s`);
+                
+                space.appendChild(star);
+            }
+            
+            // Create shooting stars
+            for (let i = 0; i < shootingStarCount; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+                
+                // Random position
+                shootingStar.style.left = `${Math.random() * 100}vw`;
+                shootingStar.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation duration and delay
+                const speed = Math.random() * 3 + 2;
+                const delay = Math.random() * 10;
+                shootingStar.style.setProperty('--speed', `${speed}s`);
+                shootingStar.style.animationDelay = `${delay}s`;
+                
+                space.appendChild(shootingStar);
+            }
+            
+            // Add focus/blur events for floating labels
+            const inputs = document.querySelectorAll('.form-group input, .form-group textarea');
+            inputs.forEach(input => {
+                const formGroup = input.parentElement;
+                
+                input.addEventListener('focus', () => {
+                    formGroup.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        formGroup.classList.remove('focused');
+                    }
+                });
+                
+                // Check if input has value on page load
+                if (input.value) {
+                    formGroup.classList.add('focused');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

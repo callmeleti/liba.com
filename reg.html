@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --dark-blue: #0a192f;
+            --navy-blue: #172a45;
+            --light-blue: #64ffda;
+            --gold-accent: #ffd700;
+            --gold-light: #ffec80;
+            --white: #e6f1ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--navy-blue);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                var(--gold-accent)
+            );
+            transform: rotate(0deg);
+            animation: rotate 6s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background-color: var(--navy-blue);
+            border-radius: 8px;
+            z-index: -1;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--gold-accent);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 10px;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .input-group label {
+            position: absolute;
+            top: 12px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: -10px;
+            left: 10px;
+            font-size: 0.8rem;
+            background-color: var(--navy-blue);
+            padding: 0 5px;
+            color: var(--gold-light);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--gold-accent);
+            color: var(--dark-blue);
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .login-link a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .login-link a:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+        
+        .floating-balls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+        
+        .ball {
+            position: absolute;
+            background: radial-gradient(circle, var(--gold-accent), transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-balls" id="floatingBalls"></div>
+    
+    <div class="container">
+        <h2>Create Account</h2>
+        <form>
+            <div class="input-group">
+                <input type="text" required>
+                <label>Full Name</label>
+            </div>
+            <div class="input-group">
+                <input type="email" required>
+                <label>Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required>
+                <label>Password</label>
+            </div>
+            <div class="input-group">
+                <input type="password" required>
+                <label>Confirm Password</label>
+            </div>
+            <button type="submit">Register</button>
+            <div class="login-link">
+                Already have an account? <a href="login.htm">Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Create floating golden balls
+        document.addEventListener('DOMContentLoaded', function() {
+            const floatingBalls = document.getElementById('floatingBalls');
+            const ballCount = 15;
+            
+            for (let i = 0; i < ballCount; i++) {
+                const ball = document.createElement('div');
+                ball.classList.add('ball');
+                
+                // Random size between 50 and 150px
+                const size = Math.random() * 100 + 50;
+                ball.style.width = `${size}px`;
+                ball.style.height = `${size}px`;
+                
+                // Random position
+                ball.style.left = `${Math.random() * 100}vw`;
+                ball.style.bottom = `-${size}px`;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 10;
+                ball.style.animation = `float ${duration}s ${delay}s infinite linear`;
+                
+                floatingBalls.appendChild(ball);
+            }
+        });
+    </script>
+</body>
+</html>

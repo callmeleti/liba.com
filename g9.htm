@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology</title>
+    <style>
+        :root {
+            --dark-bg: #121a1b;
+            --container-bg: #1e2b3a;
+            --text-light: #f4f4f9;
+            --accent-yellow: #ffd700;
+            --accent-yellow-hover: #ffc600;
+            --accent-blue: #4fc3f7;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.7;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(31, 97, 141, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-yellow));
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 35px;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-yellow), transparent);
+        }
+        
+        .link-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            gap: 15px;
+        }
+        
+        .link-list li {
+            margin: 0;
+            transition: transform 0.2s ease;
+        }
+        
+        .link-list li:hover {
+            transform: translateX(5px);
+        }
+        
+        .link-list a {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            background-color: var(--accent-yellow);
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.2);
+            border-left: 4px solid transparent;
+        }
+        
+        .link-list a:hover {
+            background-color: var(--accent-yellow-hover);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .link-list a::before {
+            content: '→';
+            margin-right: 12px;
+            color: rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+        }
+        
+        .link-list a:hover::before {
+            transform: translateX(3px);
+            color: rgba(0, 0, 0, 0.7);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 25px;
+            }
+            
+            .link-list a {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                padding-bottom: 10px;
+            }
+            
+            .link-list a {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grade 9</h1>
+        <ul class="link-list">
+            <li><a href=" " target="_blank">Text books</a></li>
+            <li><a href=" " target="_blank">Exam books</a></li>
+            <li><a href=" " target="_blank">Youtube videos</a></li>
+            
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Legetafo Boarding Acedamy</title>
+    <style>
+        :root {
+            --primary-color: #0a1f3d; /* Dark blue */
+            --secondary-color: #142a50; /* Slightly lighter dark blue */
+            --accent-color: #d4af37; /* Gold */
+            --light-color: #f8f9fa;
+            --dark-color: #050e1a; /* Very dark blue */
+            --success-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 150px);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* About Us Page Styles */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-bottom: 3px solid var(--accent-color);
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .dashboard-header h2 {
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            background-color: var(--secondary-color);
+            padding: 2rem;
+            border-radius: 0 8px 8px 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-top: 3px solid var(--accent-color);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .mission-card, .vision-card {
+            background-color: var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .mission-card:hover, .vision-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mission-card h4, .vision-card h4 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .values-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .value-item {
+            background-color: var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+            border-bottom-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .value-item i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .value-item h5 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .staff-member {
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .staff-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .staff-img {
+            height: 250px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .staff-info {
+            padding: 1.5rem;
+        }
+
+        .staff-info h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .staff-info p {
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        .search-bar {
+            margin-bottom: 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            grid-column: span 2;
+            justify-self: center;
+            width: 200px;
+        }
+
+        .submit-btn:hover {
+            background-color: #e6c34d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .history-timeline {
+            position: relative;
+            padding-left: 50px;
+            margin: 2rem 0;
+        }
+
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content {
+            background-color: var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(10px);
+        }
+
+        .timeline-content h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links li {
+            margin: 0 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+
+            .submit-btn {
+                grid-column: span 1;
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">LIBA</div>
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Legetafo Innovative Boarding Acedamy</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div id="about-page">
+                <div class="dashboard-header">
+                    <h2>About Our School</h2>
+                    <p>Learn more about our institution, values, and community</p>
+                </div>
+
+                <div class="about-tabs">
+                    <button class="tab-btn active" data-tab="overview">Overview</button>
+                    <button class="tab-btn" data-tab="mission">Mission & Vision</button>
+                    <button class="tab-btn" data-tab="history">Our History</button>
+                    <button class="tab-btn" data-tab="staff">Administrators</button>
+                    <button class="tab-btn" data-tab="contact">Contact Us</button>
+
+                    
+                </div>
+
+                <div class="tab-content active" id="overview">
+                    <h3>Welcome to LIBA</h3>
+                    <p>LIBA is a premier educational institution dedicated to nurturing young minds and preparing them for the challenges of tomorrow. Founded in 2011,
+                         we have been at the forefront of academic excellence and holistic development.</p>
+                    
+                    <p>We believe in fostering creativity, critical thinking, and character development alongside academic achievement.</p>
+                    
+                    <div class="values-list">
+                        <div class="value-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h5>Academic Excellence</h5>
+                            <p>Consistently ranked among the top schools in the region for academic performance.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-users"></i>
+                            <h5>Inclusive Community</h5>
+                            <p>We celebrate diversity and foster an environment of mutual respect and understanding.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <h5>Innovative Learning</h5>
+                            <p>Cutting-edge teaching methodologies that prepare students for the future.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-heart"></i>
+                            <h5>Character Building</h5>
+                            <p>Developing ethical leaders with strong moral values and social responsibility.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="mission">
+                    <h3>Our Mission & Vision</h3>
+                    <p>At LIBA, we are guided by a clear mission and vision that shapes everything we do:</p>
+                    
+                    <div class="mission-vision">
+                        <div class="mission-card">
+                            <h4><i class="fas fa-bullseye"></i> Our Mission</h4>
+                            <p>To provide a transformative educational experience that empowers students to achieve their full potential, 
+                                fosters a love for lifelong learning, and prepares them to make meaningful contributions to society.</p>
+                        </div>
+                        <div class="vision-card">
+                            <h4><i class="fas fa-eye"></i> Our Vision</h4>
+                            <p>To be recognized as a global leader in education, known for developing innovative, compassionate,
+                                 and intellectually curious individuals who will shape a better future for all.</p>
+                        </div>
+                    </div>
+                    
+         <h3>Our Core Values</h3>
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li style="margin-bottom: 10px;"><i class="fas fa-check" style="color: var(--accent-color);"></i>
+                                <strong>Meaningful and Practical Learning: :</strong>a dynamic learning experience that transcends textbooks,
+                                connecting lessons to real-world relevance.</li>
+                            <li style="margin-bottom: 10px;"><i class="fas fa-check" style="color: var(--accent-color);"></i> 
+                                <strong>Educational Excellence:</strong> At LIBA, educational excellence is our guiding principle,
+                                driving us to provide students with the highest quality learning experiences</li>
+                            <li style="margin-bottom: 10px;"><i class="fas fa-check" style="color: var(--accent-color);"></i> 
+                                <strong>Respect and Tolerance:</strong> upholds respect for self and others, promoting a culture of tolerance where diversity is celebrated
+                                . Students learn the importance of embracing differences, creating an inclusive and harmonious community..</li>
+                            <li style="margin-bottom: 10px;"><i class="fas fa-check" style="color: var(--accent-color);"></i> 
+                                <strong>Innovation:</strong>We continually seek innovative approaches to education, integrating technology, modern teaching methods,
+                                and global perspectives into our curriculum..</li>
+                            <li style="margin-bottom: 10px;"><i class="fas fa-check" style="color: var(--accent-color);"></i> 
+                                <strong>Community Engagemen:</strong>  We actively engage with our community, building strong relationships, 
+                                and contributing positively to the social and economic development of the region.</li>
+                        </ul>
+                </div>
+
+                <div class="tab-content" id="history">
+                    <h3>Our History</h3>
+                    <p>LIBA has a rich history of educational excellence spanning nearly three decades. Here are some key milestones in our journey:</p>
+                    
+                    <div class="history-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2011</div>
+                            <div class="timeline-content">
+                                <h4>Foundation</h4>
+                                <p>LIBA was founded by Mr. Samuel Tufa Koji, Dr. Birku Melesse, Dr. Worku Negash, Dr. Zewdineh Beyene and Dr. Isaac Bekalo. 
+                                     Wells with just 42 students.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2018</div>
+                            <div class="timeline-content">
+                                <h4>Greatest achievement</h4>
+                                <p>it achieved a significant milestone by operating a full high school, covering grades K-12 and enrolling a thriving total student population of 1306.  </p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2021</div>
+                            <div class="timeline-content">
+                                <h4>National exam</h4>
+                                <p>it achieved a significant milestone by operating a full high school, covering grades K-12 and enrolling a thriving total student population of 1306.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2024</div>
+                            <div class="timeline-content">
+                                <h4>Current Status</h4>
+                                <p>Today, LIBA stands as a thriving educational center with 1,483 students, serving not only the Legetafo community but also reaching beyond its borders.</p>
+                            </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="tab-content" id="staff">
+                    <h3>High School Administrators</h3>
+                    <p>Each brings unique expertise and a shared commitment to student success.</p>
+                    
+                 
+                    <div class="staff-grid">
+                        <div class="staff-member">
+                            <div class="staff-img" style="background-image: url();"></div>
+                            <div class="staff-info">
+                                <h4>Mr. Samuel</h4>
+                                <p>Founder and Chariman</p>
+                                <p>exp</p>
+                            </div>
+                        </div>
+                        <div class="staff-member">
+                            <div class="staff-img" style="background-image: url('');"></div>
+                            <div class="staff-info">
+                                <h4>Mr.Kedeme</h4>
+                                <p>Kg-12 General Director</p>
+                                <p>experience</p>
+                            </div>
+                        </div>
+                        <div class="staff-member">
+                            <div class="staff-img" style="background-image: url('Mr.Debela.jpg');"></div>
+                            <div class="staff-info">
+                                <h4>Mr.Debela</h4>
+                                <p>General supervisor</p>
+                                <p>experience</p>
+                        </div>
+                        </div>
+                        <div class="staff-member">
+                            <div class="staff-img" style="background-image: url(MR.chali.jpg);"></div>
+                            <div class="staff-info">
+                                <h4>Mr.Chali</h4>
+                                <p>9-12 Director</p>
+                                <p>experience</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                 
+   
+                <div class="tab-content" id="contact">
+                    <h3>Contact Us</h3>
+                    <p>We'd love to hear from you! Reach out with any questions, comments, or to schedule a visit to our campus.</p>
+                    
+                    <div class="contact-info" style="margin-bottom: 2rem;">
+                        <p><i class="fas fa-map-marker-alt" style="color: var(--accent-color); margin-right: 10px;"></i> <strong>Address:</strong> Legetafo,Ethiopia</p>
+                        <p><i class="fas fa-phone" style="color: var(--accent-color); margin-right: 10px;"></i> <strong>Phone:</strong> (555) 123-4567</p>
+                        <p><i class="fas fa-envelope" style="color: var(--accent-color); margin-right: 10px;"></i> <strong>Email:</strong> info@LIBA.edu</p>
+                        <p><i class="fas fa-clock" style="color: var(--accent-color); margin-right: 10px;"></i> <strong>Office Hours:</strong> Monday-Friday, 8:00 AM - 5:00 PM</p>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">LIBA</div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.htm">Contact</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+            <p class="copyright">© 2025 LIBA Student Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading screen functionality
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1500); // Adjust time as needed
+        });
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    // Reset animation for all tabs
+                    content.style.animation = 'none';
+                    void content.offsetWidth; // Trigger reflow
+                });
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                const activeTab = document.getElementById(tabId);
+                activeTab.classList.add('active');
+                // Apply animation to the newly active tab
+                activeTab.style.animation = 'fadeInUp 0.5s ease-out forwards';
+            });
+        });
+
+        // Contact form submission
+        document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Add animation to the form submission
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(function() {
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                setTimeout(function() {
+                    submitBtn.innerHTML = 'Send Message';
+                    submitBtn.disabled = false;
+                    document.getElementById('contact-form').reset();
+                }, 2000);
+            }, 1500);
+        });
+
+        // Staff search functionality
+        const staffSearch = document.querySelector('#staff .search-bar input');
+        const staffMembers = document.querySelectorAll('.staff-member');
+
+        if (staffSearch) {
+            staffSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                staffMembers.forEach(member => {
+                    const text = member.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        member.style.display = 'block';
+                        // Add animation when showing
+                        member.style.animation = 'fadeIn 0.5s ease-out';
+                    } else {
+                        member.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Animate elements when they come into view
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.value-item, .staff-member, .timeline-item');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        // Set initial state for animated elements
+        document.querySelectorAll('.value-item, .staff-member, .timeline-item').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'all 0.5s ease-out';
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
